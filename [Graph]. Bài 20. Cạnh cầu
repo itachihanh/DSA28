@@ -1,0 +1,118 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int n, m, timer = 0, scc = 0;
+vector<int> adj[1005];
+int disc[1005], low[1005];
+bool visited[1005], in_stack[1005], AP[1005];
+stack<int> st;
+#define ii pair<int, int>
+vector<ii> bridge;
+
+void nhap() {
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++) {
+        int x, y;
+        cin >> x >> y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+    }
+    memset(visited, false, sizeof(visited));
+    memset(AP, false, sizeof(AP));
+    memset(in_stack, false, sizeof(in_stack));
+}
+
+void DFS(int u) {
+    visited[u] = true; //in_stack[u] = true;
+    disc[u] = low[u] = ++timer;
+    st.push(u);
+    for(int i : adj[u]) {
+        if(!visited[i]) {
+            DFS(i);
+            low[u] = min(low[u], low[i]);
+        }
+        else {
+            low[u] = min(low[u], disc[i]);
+        }
+    }
+    if(low[u] == disc[u]) {
+        ++scc;
+        while(st.top() != u) {
+            cout << st.top() << " ";
+            //in_stack[st.top()] = false;
+            st.pop();
+        }
+        cout << st.top() << endl;
+        //in_stack[st.top()] = false;
+        st.pop();
+    }
+}
+
+void DFS_DinhTru(int u, int par) {
+    visited[u] = true;
+    disc[u] = low[u] = ++timer;
+    int child = 0;
+    for(int i : adj[u]) {
+        if(i == par) continue;
+        if(!visited[i]) {
+            DFS_DinhTru(i, u);
+            ++child;
+            low[u] = min(low[u], low[i]);
+            if(par != -1 && disc[u] <= low[i]) {
+                AP[u] = true;
+            }
+        }
+        else {
+            low[u] = min(low[u], disc[i]);
+        }
+    }
+    if(par == -1 && child > 1) AP[u] = true;
+}
+
+void DFS_CanhCau(int u, int par) {
+    visited[u] = true;
+    disc[u] = low[u] = ++timer;
+    for(int i : adj[u]) {
+        if(par == i) continue;
+        if(!visited[i]) {
+            DFS_CanhCau(i, u);
+            low[u] = min(low[u], low[i]);
+            if(disc[u] < low[i]) {
+                bridge.push_back({u, i});
+            }
+        }
+        else {
+            low[u] = min(low[u], disc[i]);
+        }
+    }
+}
+
+int main() {
+    nhap();
+                        
+//  CHECK THANH PHAN LIEN THONG
+//    for(int i = 1; i <= n; i++) {
+//        if(!visited[i]) {
+//            DFS(i);
+//        }
+//    }
+//    cout << scc;
+
+//  TIM DINH TRU
+//    for(int i = 1; i <= n; i++) {
+//        if(!visited[i]) {
+//            DFS_DinhTru(i, -1);
+//        }
+//    }
+//    for(int i = 1; i <= n; i++) {
+//        if(AP[i]) cout << i << " ";
+//    }
+    
+//  TIM CANH CAU
+    for(int i = 1; i <= n; i++) {
+        if(!visited[i]) {
+            DFS_CanhCau(i, -1);
+        }
+    }    
+    cout << bridge.size();
+}
