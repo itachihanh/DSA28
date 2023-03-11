@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+string s;
+int n;
+bool final;
+
+string xl(string s) {
+    string tmp = "";
+    for(int i = s.length() - 1; i >= 0; i--) {
+        tmp += s[i];
+    }
+    s += tmp;
+    return s;
+}
+
+void ktao() {
+    final = false;
+    s = string(n, '0');
+}
+
+void sinh() {
+    int i = n - 1;
+    while(i >= 0 && s[i] == '1') {
+        s[i] = '0';
+        --i;
+    }
+    if(i < 0) {
+        final = true;
+    }
+    else {
+        s[i] = '1';
+    }
+}
+
+int main() {
+    int N;
+    cin >> N;
+    vector <string> v;
+    for(int i = 1; i <= N / 2; i++) {
+        n = i;
+        ktao();
+        while(!final) {
+            v.push_back(xl(s));
+            sinh();
+        }
+    }
+    sort(v.begin(), v.end());
+    for(string i : v) {
+        cout << i << endl;
+    }
+}
