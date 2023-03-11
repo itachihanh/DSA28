@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define ll long long
+const int mod = 1e9 + 7;
+
+int main() {
+    int n;
+    cin >> n;
+    priority_queue <ll> Q;
+    for(int i = 0; i < n; i++) {
+        ll tmp;
+        cin >> tmp;
+        Q.push(tmp);
+    }
+    ll sum = 0;
+    if(Q.size() == 1) {
+        cout << Q.top();
+        return 0;
+    }
+    while(Q.size() > 1) {
+        ll tmp1 = Q.top();
+        Q.pop();
+        ll tmp2 = Q.top();
+        Q.pop();
+        sum += (tmp1 + tmp2);
+        Q.push(tmp1 + tmp2);
+        sum %= mod;
+    }
+    cout << sum;
+}
