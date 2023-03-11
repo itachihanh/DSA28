@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define ll long long
+
+string mi(string s) {
+    for(int i = 0; i < s.length(); i++) {
+        if(s[i] == '6') s[i] = '5';
+    }
+    return s;
+}
+
+string ma(string s) {
+    for(int i = 0; i < s.length(); i++) {
+        if(s[i] == '5') s[i] = '6';
+    }
+    return s;
+}
+
+int main() {
+    string a, b;
+    cin >> a >> b;
+    cout << stoll(ma(a)) + stoll(ma(b)) << " " << stoll(mi(a)) + stoll(mi(b));
+}
