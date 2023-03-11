@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int k, n, m;
+vector<int> ke[10005];
+bool visited[10005];
+int a[10005], cnt[10005];
+
+void DFS(int i) {
+    cnt[i]++;
+    visited[i] = true;
+    for(int j : ke[i]) {
+        if(!visited[j]) {
+            DFS(j);
+        }
+    }
+}
+
+int main() {
+    cin >> k >> n >> m;
+    for(int i = 1; i <= k; i++) {
+        cin >> a[i];
+    }
+    for(int i = 1; i <= m; i++) {
+        int x, y;
+        cin >> x >> y;
+        ke[x].push_back(y);
+    }
+    int count = 0;
+    for(int i = 1; i <= k; i++) {
+        memset(visited, false, sizeof(visited));
+        DFS(a[i]);
+    }
+    for(int i = 1; i <= n; i++) {
+        if(cnt[i] == k) ++count;
+    }
+    cout << count;
+}
