@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int n, m;
+int parent[1005];
+bool visited[1005];
+vector<int> ke[1005];
+
+void DFS(int s) {
+    if(!visited[s]) {
+        visited[s] = true;
+        for(int i : ke[s]) {
+            if(!visited[i]) {
+                DFS(i);
+            } 
+        }
+    }
+}
+
+int main() {
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++) {
+        int x, y;
+        cin >> x >> y;
+        parent[i] = i;
+        ke[x].push_back(y);
+        ke[y].push_back(x);
+    }
+    if(m != n - 1) {
+        cout << 0;
+        return 0;
+    }
+    DFS(1);
+    for(int i = 1; i <= n; i++) {
+        if(!visited[i]) {
+            cout << 0;
+            return 0;
+        }
+    }
+    cout << 1;
+}
