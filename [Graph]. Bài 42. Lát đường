@@ -1,0 +1,53 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int n, m;
+int parent[100005];
+int sz[100005];
+int cnt;
+int res = 0;
+
+void ktao() {
+    cin >> n >> m;
+    cnt = n;
+    for(int i = 1; i <= n; i++) {
+        parent[i] = i;
+        sz[i] = 1;
+    }
+}
+
+int Find(int u) {
+    if(u == parent[u]) return u;
+    else {
+        parent[u] = Find(parent[u]);
+        return parent[u];
+    }
+}
+
+bool Union(int u, int v) {
+    u = Find(u);
+    v = Find(v);
+    if(u == v) return false;
+    if(sz[u] > sz[v]) {
+        sz[u] += sz[v];
+        parent[v] = u;
+        res = max(res, sz[u]);
+    }
+    else {
+        sz[v] += sz[u];
+        parent[u] = v;
+        res = max(res, sz[v]);
+    }
+    return true;
+}
+
+int main() {
+    ktao();
+    for(int i = 1; i <= m; i++) {
+        int a, b; cin >> a >> b;
+        if(Union(a, b)) {
+            --cnt;
+        }
+        cout << cnt << " " << res << endl;
+    }
+}
