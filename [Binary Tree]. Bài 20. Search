@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node{
+    int val;
+    node *left, *right;
+    node(int x) {
+        val = x;
+        left = right = NULL;
+    }
+};
+
+node *insert(node *root, int key) {
+    if(root == NULL) {
+        return new node(key);
+    }
+    if(root->val < key) {
+        root->right = insert(root->right, key);
+    }
+    else if(root->val > key) {
+        root->left = insert(root->left, key);
+    }
+    return root;
+}
+
+bool check(node *root, int key) {
+    if(key == root->val) return true;
+    else if(key < root->val) {
+        if(root->left != NULL) return check(root->left, key);
+        else return false;
+    }
+    else {
+        if(root->right != NULL) return check(root->right, key);
+        else return false;
+    }
+    return false;
+}
+
+int main() {
+    int n; cin >> n;
+    node *root = NULL;
+    for(int i = 0; i < n; i++) {
+        int x; cin >> x;
+        root = insert(root, x);
+    }
+    int key; cin >> key;
+    if(check(root, key)) cout << "YES";
+    else cout << "NO";
+}
