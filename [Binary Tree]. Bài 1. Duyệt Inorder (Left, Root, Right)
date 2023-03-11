@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node {
+    int val;
+    node *right;
+    node *left;
+    node(int x) {
+        val = x;
+        left = right = NULL; 
+    }
+};
+
+void makeRoot(node *root, int u, int v, char c) {
+    if(c == 'L') root->left = new node(v);
+    else root->right = new node(v);
+}
+
+void insertNode(node *root, int u, int v, char c) {
+    if(root == NULL) return;
+    if(root->val == u) makeRoot(root, u, v, c);
+    else {
+        insertNode(root->left, u, v, c);
+        insertNode(root->right, u, v, c);
+    }
+}
+
+void inorder(node *root) { 
+    if(root != NULL) {
+        inorder(root->left);
+        cout << root->val << " ";
+        inorder(root->right);
+    }
+}
+
+int main() {
+    int n; cin >> n;
+    node *root = NULL;
+    for(int i = 1; i <= n; i++) {
+        int a, b; char c; cin >> a >> b >> c;
+        if(root == NULL) root = new node(a);
+        insertNode(root, a, b, c);
+    }
+    inorder(root);
+}
