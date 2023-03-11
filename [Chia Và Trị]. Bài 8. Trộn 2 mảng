@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define ll long long
+const int mod = 1e9 + 7;
+
+int main() {
+    int n, m, k;
+    cin >> n >> m >> k;
+    int a[n], b[m];
+    for(int &i : a) cin >> i;
+    for(int &i : b) cin >> i;
+    int i = 0, j = 0, idx = 0;
+    while(i < n && j < m) {
+        if(a[i] >= b[j]) {
+            ++idx;
+            if(idx == k) {
+                cout << b[j];
+                return 0;
+            }
+            ++j;
+        }
+        else {
+            ++idx;
+            if(idx == k) {
+                cout << a[i];
+                return 0;
+            }
+            ++i;
+        }
+    }
+    while(i < n) {
+        ++idx;
+        if(idx == k) {
+            cout << a[i];
+            return 0;
+        }
+        ++i;
+    }
+    while(j < m) {
+        ++idx;
+        if(idx == k) {
+            cout << b[j];
+            return 0;
+        }
+        ++j;
+    }
+}
