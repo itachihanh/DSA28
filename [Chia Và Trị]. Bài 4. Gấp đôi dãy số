@@ -1,0 +1,16 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int Find(int n, int k) {
+    if(k % 2 == 1) return 1;
+    if(k == (ll)(pow(2, n - 1))) return n;
+    if(k < (ll)(pow(2, n - 1))) return Find(n - 1, k);
+    else return Find(n - 1, k - (ll)(pow(2, n - 1)));
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    cout << Find(n, k);
+}
