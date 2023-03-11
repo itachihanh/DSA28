@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define ll long long
+
+int n, k, a[20];
+bool final = false;
+
+void ktao() {
+    for(int i = 1; i <= k; i++) {
+        a[i] = i;
+    }
+}
+
+void sinh() {
+    int i = k;
+    while(i >= 1 && a[i] == n - k + i) {
+        --i;
+    }
+    if(i == 0) {
+        final = true;
+    }
+    else {
+        a[i]++;
+        for(int j = i + 1; j <= k; j++) {
+            a[j] = a[j-1] + 1;
+        }
+    }
+}
+
+int main() {
+    cin >> n >> k;
+    ktao();
+    int b[n + 1];
+    for(int i = 1; i <= k; i++) {
+        cin >> b[i];
+    }
+    ll cnt = 1; 
+    for(int i = 1; i <= n; i++) {
+        cnt *= i;
+    }
+    for(int i = 1; i <= k; i++) {
+        cnt /= i;
+    }
+    for(int i = 1; i <= n - k; i++) {
+        cnt /= i;
+    }
+    while(!final) {
+        bool check = true;
+        for(int i = 1; i <= k; i++) {
+            if(a[i] != b[i]) {
+                check = false;
+                break;
+            }
+        }
+        if(check) {
+            cout << cnt;
+        }
+        cnt--;
+        sinh();
+    }
+}
