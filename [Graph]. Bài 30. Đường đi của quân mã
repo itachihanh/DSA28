@@ -1,0 +1,40 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int di[8] = {-2, -2, -1, -1, 1, 1, 2, 2};
+int dj[8] = {-1, 1, -2, 2, -2, 2, -1, 1};
+int a[1005][1005];
+int cnt[1005][1005];
+int n;
+
+void BFS(int i, int j) {
+    queue<pair<int, int>> q;
+    q.push({i, j});
+    while(!q.empty()) {
+        pair<int, int> t = q.front();
+        q.pop();
+        int i = t.first, j = t.second;
+        for(int k = 0; k < 8; k++) {
+            int i1 = i + di[k], j1 = j + dj[k];
+            if(a[i1][j1] && i1 >= 1 && i1 <= n && j1 >= 1 && j1 <= n) {
+                a[i1][j1] = 0;
+                q.push({i1, j1});
+                cnt[i1][j1] = cnt[i][j] + 1;
+            }
+        }
+    }
+}
+
+int main() {
+    cin >> n;
+    int s, t, u, v;
+    cin >> s >> t >> u >> v;
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    }
+    BFS(s, t);
+    if(cnt[u][v] == 0) cout << -1;
+    else cout << cnt[u][v];
+}
