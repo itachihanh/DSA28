@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+const int mod = 1e9 + 7;
+
+struct matrix {
+    ll a[2][2];
+};
+
+matrix nhan(matrix x, matrix y) {
+    matrix tmp;
+    for(int i = 0; i < 2; i++) {
+        for(int j = 0; j < 2; j++) {
+            tmp.a[i][j] = 0;
+            for(int k = 0; k < 2; k++) {
+                tmp.a[i][j] += x.a[i][k] * y.a[k][j];
+                tmp.a[i][j] %= mod;
+            }
+        }
+    }
+    return tmp;
+}
+
+matrix lt(matrix x, ll n) {
+    if(n == 1) return x;
+    matrix tmp = lt(x, n / 2);
+    tmp = nhan(tmp, tmp);
+    if(n % 2) tmp = nhan(tmp, x);
+    return tmp;
+}
+
+int main() {
+    ll n;
+    cin >> n;
+    matrix x;
+    x.a[0][0] = 1;
+    x.a[0][1] = 1;
+    x.a[1][0] = 1;
+    x.a[1][1] = 0;
+    matrix kq = lt(x, n);
+    cout << kq.a[1][0];
+}
