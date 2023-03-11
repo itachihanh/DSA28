@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+const int mod = 1e9 + 7;
+
+int n, X[100], k, s, cnt;
+
+void Try(int i) {
+    for(int j = X[i - 1] + 1; j <= n - k + i; j++) {
+        X[i] = j;
+        if(i == k) {
+            int sum = 0;
+            for(int i = 1; i <= n; i++) {
+                sum += X[i];
+            }
+            if(sum == s) ++cnt;
+        }
+        else Try(i + 1);
+    }
+}
+
+int main() {
+    cin >> n >> k >> s;
+    Try(1);
+    cout << cnt;
+}
