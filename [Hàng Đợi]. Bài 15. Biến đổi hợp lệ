@@ -1,0 +1,53 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int p[10000];
+
+void sang() {
+    p[0] = p[1] = 0;
+    for(int i = 2; i < 10000; i++) p[i] = 1;
+    for(int i = 2; i < sqrt(10000); i++) {
+        if(p[i]) {
+            for(int j = i * i; j <= 10000; j+=i) {
+                p[j] = 0;
+            }    
+        }
+    }
+}
+
+int bfs(int s, int t) {
+    queue<pair<int, int>> q;
+    q.push({s, 0});
+    set<int> se;
+    se.insert(s);
+    while(!q.empty()) {
+        auto top = q.front(); q.pop();
+        int v = top.first, tt = top.second;
+        if(v == t) return tt;
+        string tmp = to_string(v);
+        for(int i = 0; i < 4; i++) {
+            char y = tmp[i];
+            for(char x : {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}) {
+                if(tmp[i] != x) {
+                    tmp[i] = x;
+                    int val = stoi(tmp);
+                    if(val >= 1000 && p[val] && !se.count(val)) {
+                        q.push({val, tt + 1});
+                        se.insert(val);
+                    }
+                }
+            }
+            tmp[i] = y;
+        }
+    }
+    return -1;
+}
+
+int main() {
+    sang();
+    int t; cin >> t;
+    while(t--) {
+        int a, b; cin >> a >> b;
+        cout << bfs(a, b) << endl;
+    }
+}
