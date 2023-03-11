@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+int a[1005][1005], n, m, d[1005][1005];
+bool visited[1005][1005];
+
+void BFS() {
+    queue<pair<int, int>> q;
+    q.push({1, 1});
+    while(!q.empty()) {
+        auto top = q.front(); q.pop();
+        int x = top.first, y = top.second;
+        int x1 = x + a[x][y], y1 = y + a[x][y];
+        if(x1 <= n && !visited[x1][y]) {
+            q.push({x1, y});
+            visited[x1][y] = true;
+            d[x1][y] = d[x][y] + 1;
+        }
+        if(y1 <= m && !visited[x][y1]) {
+            q.push({x, y1});
+            visited[x][y1] = true;
+            d[x][y1] = d[x][y] + 1;
+        }
+    }
+}
+
+int main() {
+    int t; cin >> t;
+    while(t--) {
+        memset(a, 0, sizeof(a));
+        memset(d, 0, sizeof(d));
+        memset(visited, false, sizeof(visited));
+        cin >> n >> m;
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= m; j++) {
+                cin >> a[i][j];
+            }
+        }
+        BFS();
+        if(d[n][m] == 0) cout << -1 << endl;
+        else cout << d[n][m] << endl;
+    }
+}
