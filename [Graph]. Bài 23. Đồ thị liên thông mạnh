@@ -1,0 +1,62 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int n, m;
+vector<int> adj[1005];
+vector<int> t_adj[1005];
+stack<int> st;
+bool visited[1005];
+
+void nhap() {
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++) {
+        int x, y;
+        cin >> x >> y;
+        adj[x].push_back(y);
+        t_adj[y].push_back(x);
+    }
+    memset(visited, false, sizeof(visited));
+}
+
+void DFS1(int u) {
+    visited[u] = true;
+    for(int i : adj[u]) {
+        if(!visited[i]) {
+            DFS1(i);
+        }
+    }
+    st.push(u);
+}
+
+void DFS2(int u) {
+    visited[u] = true;
+    for(int i : t_adj[u]) {
+        if(!visited[i]) {
+            DFS2(i);
+        }
+    }
+}
+
+void Kosaraju() {
+    for(int i = 1; i <= n; i++) {
+        if(!visited[i]) {
+            DFS1(i);
+        }
+    }
+    memset(visited, false, sizeof(visited));
+    int cnt = 0;
+    while(!st.empty()) {
+        int top = st.top(); st.pop();
+        if(!visited[top]) {
+            ++cnt;
+            DFS2(top);
+        }
+    }
+    if(cnt == 1) cout << 1;
+    else cout << 0;
+}
+
+int main() {
+    nhap();
+    Kosaraju();
+}
