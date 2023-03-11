@@ -1,0 +1,23 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int a[n];
+    for(int &i : a) cin >> i;
+    int dp[n];
+    memset(dp, 0, sizeof(dp));
+    dp[0] = a[0];
+    for(int i = 1; i < n; i++) {
+        for(int j = 0; j < i; j++) {
+            if(a[i] > a[j]) {
+                dp[i] = max(a[i] + dp[j], dp[i]);
+            }
+            else {
+                dp[i] = max(dp[i], a[i]);
+            }
+        }
+    }
+    cout << *max_element(dp, dp + n);
+}
