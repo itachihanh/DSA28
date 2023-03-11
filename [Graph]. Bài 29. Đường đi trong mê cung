@@ -1,0 +1,37 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int n, a[1005][1005], d[1005][1005], s, t, u, v;
+int dx[8] = {-1, +0, +1, -1, +1, -1, +0, +1};
+int dy[8] = {-1, -1, -1, +0, +0, +1, +1, +1};
+
+void BFS(int i, int j) {
+    a[i][j] = 0;
+    queue<pair<int, int>> Q;
+    Q.push({i, j});
+    while(!Q.empty()) {
+        pair<int, int> top = Q.front(); Q.pop();
+        int x = top.first, y = top.second;
+        for(int k = 0; k < 8; k++) {
+            int i1 = x + dx[k], j1 = y + dy[k];
+            if(i1 >= 1 && j1 >= 1 && i1 <= n && j1 <= n && a[i1][j1]) {
+                Q.push({i1, j1});
+                a[i1][j1] = 0;
+                d[i1][j1] = d[x][y] + 1;
+            }
+        }
+    }
+}
+
+int main() {
+    cin >> n;
+    cin >> s >> t >> u >> v;
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    }
+    BFS(s, t);
+    if(d[u][v]) cout << d[u][v];
+    else cout << -1;
+}
