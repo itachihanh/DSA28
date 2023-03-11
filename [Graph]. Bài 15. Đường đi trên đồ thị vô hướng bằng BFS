@@ -1,0 +1,53 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<int> ke[1005];
+int parent[1005];
+bool visited[1005];
+
+void BFS(int s) {
+    queue<int> q;
+    q.push(s);
+    visited[s] = true;
+    while(!q.empty()) {
+        int x = q.front();
+        q.pop();
+        for(int i : ke[x]) {
+            if(!visited[i]) {
+                q.push(i);
+                parent[i] = x;
+                visited[i] = true;
+            }
+        }
+    }
+}
+
+int main() {
+    int n, m, s, t;
+    cin >> n >> m >> s >> t;
+    for(int i = 1; i <= m; i++) {
+        int a, b;
+        cin >> a >> b;
+        ke[a].push_back(b);
+        ke[b].push_back(a);
+    }
+    for(int i = 1; i <= n; i++) {
+        sort(ke[i].begin(), ke[i].end());
+    }
+    BFS(s);
+    if(!visited[t]) {
+        cout << -1;
+    }
+    else {
+        vector<int> v;
+        while(t != s) {
+            v.push_back(t);
+            t = parent[t];
+        }
+        v.push_back(s);
+        reverse(v.begin(), v.end());
+        for(int i : v) {
+            cout << i << " ";
+        }    
+    }
+}
