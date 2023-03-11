@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int n, a[100];
+bool final = false;
+
+bool check(int a[]) {
+    for(int i = 2; i <= n; i++) {
+        if(a[i] == a[i - 1] + 1 || a[i] == a[i - 1] - 1) return false;
+    }
+    return true;
+}
+
+void ktao() {
+    for(int i = 1; i <= n; i++) {
+        a[i] = i;
+    }
+}
+
+void sinh() {
+    int i = n - 1;
+    while(a[i] > a[i+1] && i >= 1) {
+        --i;
+    }
+    if(i == 0) {
+        final = true;
+    }
+    else {
+        int j = n;
+        while(a[i] > a[j]) {
+            --j;
+        }
+        swap(a[i], a[j]);
+        reverse(a + i + 1, a + n + 1);
+    }
+}
+
+int main() {
+    cin >> n;
+    ktao();
+    while(!final) {
+        if(check(a)) {
+            for(int i = 1; i <= n; i++) {
+                cout << a[i];
+            }
+            cout << endl;
+        }
+        sinh();
+    }
+}
