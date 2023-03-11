@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<int> ke[1005];
+int color[1005];
+
+bool DFS(int s) {
+    color[s] = 1;
+    for(int i : ke[s]) {
+        if(color[i] == 0) {
+            if(DFS(i)) return true;
+        }
+        else {
+            if(color[i] == 1) return true;
+        }
+    }
+    color[s] = 2;
+    return false;
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++) {
+        int x, y;
+        cin >> x >> y;
+        ke[x].push_back(y);
+    }
+    for(int i = 1; i <= n; i++) {
+        if(DFS(i)) {
+            cout << 1;
+            return 0;
+        }
+    }
+    cout << 0;
+}
