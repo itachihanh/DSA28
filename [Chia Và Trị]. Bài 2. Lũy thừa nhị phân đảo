@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+const int mod = 1e9 + 7;
+
+ll pow1(ll a, ll b) {
+    ll res = 1;
+    while(b) {
+        if(b % 2 == 1) {
+            res *= a;
+            res %= mod;
+        }
+        a *= a;
+        a %= mod;
+        b /= 2;
+    }
+    return res;
+}
+
+int main() {
+
+        string s;
+        cin >> s;
+        ll n = stoll(s);
+        reverse(s.begin(), s.end());
+        ll r = stoll(s);
+        cout << pow1(n, r) << endl;
+}
