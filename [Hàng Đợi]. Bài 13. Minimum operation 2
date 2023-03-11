@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int main() {
+    int t; cin >> t;
+    while(t--) {
+        ll a; cin >> a;
+        set<ll> se;
+        queue<pair<ll, ll>> q;
+        se.insert(a);
+        q.push({a, 0});
+        while(1) {
+            auto top = q.front(); q.pop();
+            if(top.first == 1) {
+                cout << top.second << endl;
+                break;
+            }
+            for(ll i = 2; i <= sqrt(top.first); i++) {
+                if(top.first % i == 0 && !se.count(top.first / i)) {
+                    q.push({top.first / i, top.second + 1});
+                    se.insert(top.first / i);
+                }
+            }
+            if(top.first > 0 && !se.count(top.first - 1)) {
+                q.push({top.first - 1, top.second + 1});
+                se.insert(top.first - 1);
+            }
+        }
+    }
+}
