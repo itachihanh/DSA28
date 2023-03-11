@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int n, a[100], cnt;;
+bool final = false;
+
+void init() {
+    cnt = 1;
+    a[1] = n;
+}
+
+void sinh() {
+    int i = cnt;
+    while(i >= 1 && a[i] == 1) {
+        --i;
+    }
+    if(i == 0) {
+        final = true;
+    }
+    else {
+        int tmp = cnt - i + 1;
+        --a[i];
+        cnt = i;
+        int q = tmp / a[i];
+        int r = tmp % a[i];
+        if(q != 0) {
+            for(int j = 1; j <= q; j++) {
+                a[i + j] = a[i];
+            }
+            cnt += q;
+        }
+        if(r != 0) {
+            ++cnt;
+            a[cnt] = r;
+        }
+    }
+}
+
+int main() {
+    cin >> n;
+    init();
+    vector <string> v;
+    int dem = 0;
+    while(!final) {
+        string s = "";
+        for(int i = 1; i <= cnt; i++) {
+            s += to_string(a[i]) + "+";
+        }
+        s.pop_back();
+        v.push_back(s);
+        sinh();
+        ++dem;
+    }
+    cout << dem << endl;
+    for(string s : v) {
+        cout << s << endl;
+    }
+}
