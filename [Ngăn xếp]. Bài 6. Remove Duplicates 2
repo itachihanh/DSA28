@@ -1,0 +1,37 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int main() {
+    string s;
+    cin >> s;
+    int k; cin >> k; k--;
+    stack<char> st;
+    string s2 = "";
+    for(int i = 0; i < s.length(); i++) {
+        int cnt = 0;
+        for(int j = 1; j <= k; j++) {
+            if(!st.empty() && s[i] == st.top()) {
+                ++cnt;
+                st.pop();
+            }
+            else {
+                break;
+            }
+        }
+        if(cnt == k) {
+            for(int j = 1; j <= k; j++) {
+                s2.pop_back();
+            }
+        }
+        else {
+            for(int j = 1; j <= cnt; j++) {
+                st.push(s[i]);
+            }
+            s2 += s[i];
+            st.push(s[i]);
+        }
+    }
+    if(s2.length() == 0) cout << "EMPTY";
+    else cout << s2;
+}
