@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<int> a;
+
+struct node {
+    int val, h;
+    node *left;
+    node *right;
+    node(int x, int y) {
+        h = y;
+        val = x;
+        left = right = NULL;
+    }
+};
+
+void makeRoot(node *root, int u, int v, int k, char c) {
+    if(c == 'L') root->left = new node(v, k + 1);
+    else root->right = new node(v, k + 1);
+    a.push_back(k + 1);
+}
+
+void insertNode(node *root, int u, int v, char c) {
+    if(root == NULL) return;
+    if(root->val == u) makeRoot(root, u, v, root->h, c);
+    else {
+        insertNode(root->left, u, v, c);
+        insertNode(root->right, u, v, c);
+    }
+}
+
+int main() {
+    int n; cin >> n;
+    node *root = NULL;
+    for(int i = 1; i <= n; i++) {
+        int u, v; char c; cin >> u >> v >> c;
+        if(root == NULL) root = new node(u, 0);
+        insertNode(root, u, v, c);
+    }
+    a.push_back(0);
+    sort(a.begin(), a.end());
+    int x = a[a.size() - 1], cnt = 0, idx = a.size() - 1;
+    while(x == a[idx]) {
+        --idx;
+        ++cnt;
+    }
+    cout << cnt;
+}
