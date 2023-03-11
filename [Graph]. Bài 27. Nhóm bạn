@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int n, m, cnt;
+bool visited[1005];
+vector<int> ke[1005];
+
+void DFS(int s) {
+    ++cnt;
+    visited[s] = true;
+    for(int i : ke[s]) {
+        if(!visited[i]) {
+            DFS(i);
+        }
+    }
+}
+
+int main() {
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++) {
+        int x, y;
+        cin >> x >> y;
+        ke[x].push_back(y);
+        ke[y].push_back(x);
+    }
+    int m = 0;
+    for(int i = 1; i <= n; i++) {
+        cnt = 0;
+        if(!visited[i]) {
+            DFS(i);
+        }
+        m = max(m, cnt);
+    }
+    cout << m;
+}
