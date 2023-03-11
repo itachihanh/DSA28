@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n, X[100], a[100], idx;
+vector<string> v;
+
+void Try(int i, int pos) {
+    for(int j = pos; j <= n; j++) {
+        if(X[j] > a[i - 1]) {
+            a[i] = X[j];
+            if(i >= 2) {
+                string tmp = "";
+                for(int idx = 1; idx <= i; idx++) {
+                    tmp += to_string(a[idx]) + " ";
+                }
+                v.push_back(tmp);
+            }
+            Try(i + 1, j + 1);
+        }
+    }
+}
+
+int main() {
+    cin >> n;
+    for(int i = 1; i <= n; i++) {
+        cin >> X[i];
+    }
+    Try(1, 1);
+    sort(v.begin(), v.end());
+    for(string i : v) {
+        cout << i << endl;
+    }
+}
