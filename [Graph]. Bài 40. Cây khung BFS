@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<int> ke[1005];
+int n, m, s;
+bool visited[1005];
+vector<string> v;
+
+void BFS(int u) {
+    queue<int> q;
+    q.push(u);
+    while(!q.empty()) {
+        int x = q.front(); q.pop();
+        visited[x] = true;
+        for(int i : ke[x]) {
+            if(!visited[i]) {
+                q.push(i);
+                visited[i] = true;
+                string tmp = to_string(x) + "->" + to_string(i); 
+                v.push_back(tmp);
+            }
+        }
+    }
+}
+
+int main() {
+    cin >> n >> m >> s;
+    for(int i = 1; i <= m; i++) {
+        int a, b;
+        cin >> a >> b;
+        ke[a].push_back(b);
+        ke[b].push_back(a);
+    }
+    for(int i = 1; i <= n; i++) {
+        sort(ke[i].begin(), ke[i].end());
+    }
+    BFS(s);
+    for(string i : v) {
+        cout << i << endl;
+    }
+}
