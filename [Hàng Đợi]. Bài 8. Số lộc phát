@@ -1,0 +1,23 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int t; cin >> t;
+    while(t--) {
+        int n; cin >> n;
+        queue<string> q;
+        vector<string> v;
+        q.push("6");
+        q.push("8");
+        while(q.front().length() <= n) {
+            string s = q.front(); q.pop();
+            v.push_back(s);
+            s += "6"; q.push(s);
+            s.pop_back();
+            s += "8"; q.push(s);
+        }
+        reverse(v.begin(), v.end());
+        for(string s : v) cout << s << " ";
+        cout << endl;
+    }
+}
