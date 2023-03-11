@@ -1,0 +1,65 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+const int mod = 1e9 + 7;
+
+int n, X[100], k;
+string s1, s2;
+
+bool check1() {
+    int cnt = 0;
+    for(int i = 1; i <= n; i++) {
+        if(X[i] == 1) {
+            cnt++;
+        }
+    }
+    return cnt == k;
+}
+
+bool check2() {
+    int cnt = 0, count = 0;
+    for(int i = 1; i <= n; i++) {
+        if(X[i] == 1) {
+            while(X[i] == 1) {
+                cnt++;
+                i++;
+            }
+            if(cnt == k) {
+                count++;
+                cnt = 0;
+            }
+            if(cnt > k) return 0;
+            else cnt = 0;
+        }
+    }
+    return count == 1;
+}
+
+void Try(int i) {
+    for(int j = 0; j <= 1; j++) {
+        X[i] = j;
+        if(i == n) {
+            if(check1()) {
+                for(int idx = 1; idx <= n; idx++) {
+                    s1 += to_string(X[idx]);
+                }
+                s1 += " ";
+            }
+            if(check2()) {
+                for(int idx = 1; idx <= n; idx++) {
+                    s2 += to_string(X[idx]);
+                }
+                s2 += " ";
+            }
+        }
+        else Try(i + 1);
+    }
+}
+
+int main() {
+    s1 = "";
+    s2 = "";
+    cin >> n >> k;
+    Try(1);
+    cout << s1 << endl << s2;
+}
