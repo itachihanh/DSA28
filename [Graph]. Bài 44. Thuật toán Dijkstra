@@ -1,0 +1,43 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ii pair<int, int>
+int n, m, s;
+vector<ii> adj[1005];
+
+void nhap() {
+    cin >> n >> m >> s;
+    for(int i = 1; i <= m; i++) {
+        int a, b, c;
+        cin >> a >> b >> c;
+        adj[a].push_back({c, b});
+        adj[b].push_back({c, a});
+    }
+}
+
+void Dijkstra(int s) {
+    priority_queue<ii, vector<ii>, greater<ii>> q;
+    q.push({0, s});
+    vector<int> d(n + 1, 1e9);
+    d[s] = 0;
+    while(!q.empty()) {
+        ii t = q.top(); q.pop();
+        int w = t.first, u = t.second;
+        if(w > d[u]) continue;
+        for(ii i : adj[u]) {
+            int x = i.first, y = i.second;
+            if(d[y] > d[u] + x) {
+                d[y] = d[u] + x;
+                q.push({d[y], y});
+            }
+        }
+    }
+    for(int i = 1; i <= n; i++) {
+        cout << d[i] << " ";
+    }
+}
+
+int main() {
+    nhap();
+    Dijkstra(s);
+}
