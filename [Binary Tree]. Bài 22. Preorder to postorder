@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node {
+    int val;
+    node *left, *right;
+    node(int x) {
+        val = x;
+        left = right = NULL;
+    }
+};
+
+int find(int in[], int n, int x) {
+    for(int i = 0; i < n; i++) {
+        if(in[i] == x) return i;
+    }
+    return -1;
+}
+
+void make(node *root, int n, int in[], int pre[]) {
+    int search = find(in, n, root->val);
+    if(search != 0) {
+        int a[search], b[search];
+        for(int i = 0; i < search; i++) {
+            a[i] = pre[i + 1];
+            b[i] = in[i];
+        }
+        root->left = new node(pre[1]);
+        make(root->left, search, b, a);
+    }
+    if(search != n - 1) {
+        root->right = new node(pre[search + 1]);
+        make(root->right, n - search - 1, in + search + 1, pre + search + 1);
+    }
+}
+
+void postorder(node *root) {
+    if(root == NULL) return;
+    postorder(root->left);
+    postorder(root->right);
+    cout << root->val << " ";
+}
+
+int main() {
+    int n; cin >> n;
+    int pre[n], in[n];
+    for(int i = 0; i < n; i++) {
+        cin >> pre[i];
+        in[i] = pre[i];
+    }
+    sort(in, in + n);
+    node *root = new node(pre[0]);
+    make(root, n, in, pre);
+    postorder(root);
+}
