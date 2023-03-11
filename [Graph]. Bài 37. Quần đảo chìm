@@ -1,0 +1,46 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int n, m, timer = 0, cnt = 0;
+vector<int> adj[1005];
+int low[1005], disc[1005];
+bool visited[1005], AP[1005];
+
+void nhap() {
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++) {
+        int a, b; cin >> a >> b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
+}
+
+void DFS(int u, int par) {
+    visited[u] = true;
+    low[u] = disc[u] = ++timer;
+    int child = 0;
+    for(int i : adj[u]) {
+        if(i == par) continue;
+        if(!visited[i]) {
+            ++child;
+            DFS(i, u);
+            low[u] = min(low[u], low[i]);
+            if(disc[u] <= low[i] && par != -1) ++cnt;
+        }
+        else {
+            low[u] = min(low[u], disc[i]);
+        }
+    }
+    if(par == -1 && child > 1) ++cnt;
+}
+
+int main() {
+    nhap();
+    for(int i = 1; i <= n; i++) {
+        if(!visited[i]) {
+            DFS(i, -1);
+        }
+    }
+    cout << cnt;
+}
