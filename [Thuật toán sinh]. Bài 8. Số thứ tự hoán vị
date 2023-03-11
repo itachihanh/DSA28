@@ -1,0 +1,40 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+const int mod = 1e9 + 7;
+
+int n, X[100], a[100], k, cnt;
+bool used[100];
+
+bool check() {
+    for(int i = 1; i <= n; i++) {
+        if(a[i] != X[i]) return false;
+    }
+    return true;
+}
+
+void Try(int i) {
+    for(int j = 1; j <= n; j++) {
+        if(!used[j]) {
+            X[i] = j;
+            used[j] = true;
+            if(i == n) {
+                ++cnt;
+                if(check()) {
+                    cout << cnt;
+                    break;
+                }
+            }
+            else Try(i + 1);
+            used[j] = false;
+        }
+    }
+}
+
+int main() {
+    cin >> n;
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i];
+    }
+    Try(1);
+}
