@@ -1,0 +1,17 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+        int n; cin >> n;
+        queue<string> q;
+        vector<string> v;
+        q.push("1");
+        while(v.size() < n) {
+            string s = q.front(); q.pop();
+            v.push_back(s);
+            s += "0"; q.push(s);
+            s.pop_back();
+            s += "1"; q.push(s);
+        }
+        for(string s : v) cout << s << " ";
+}
