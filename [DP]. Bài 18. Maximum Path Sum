@@ -1,0 +1,22 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+const int mod = 1e9 + 7;
+int n, m;
+int a[501][501], b[501][501];
+
+int main() {
+    cin >> n >> m;
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= m; j++) {
+            cin >> a[i][j];
+            b[i][j] = a[i][j];
+        }
+    }
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= m; j++) {
+            b[i][j] = max({b[i][j - 1], b[i - 1][j - 1], b[i - 1][j]}) + a[i][j];
+        }
+    }
+    cout << b[n][m];
+}
