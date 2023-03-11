@@ -1,0 +1,71 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+struct edge {
+    int x, y, w;
+};
+
+vector<edge> E;
+int n, m;
+int parent[100005], sz[100005];
+
+bool cmp(edge a, edge b) {
+    return a.w < b.w;
+}
+
+void ktao() {
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++) {
+        ll a, b, c;
+        cin >> a >> b >> c;
+        E.push_back({a, b, c});
+    }
+    sort(E.begin(), E.end(), cmp);
+    for(int i = 1; i <= n; i++) {
+        parent[i] = i;
+        sz[i] = 1;
+    }
+}
+
+int Find(int u) {
+    if(u == parent[u]) return u;
+    else {
+        parent[u] = Find(parent[u]);
+        return parent[u];
+    }
+}
+
+bool Union(int a, int b) {
+    a = Find(a);
+    b = Find(b);
+    if(a == b) return false;
+    if(sz[a] < sz[b]) {
+        parent[b] = a;
+        sz[a] += sz[b];
+    }
+    else {
+        parent[a] = b;
+        sz[b] += sz[a];
+    }
+    return true;
+}
+
+void Kruskal() {
+    vector<edge> MST;
+    ll d = 0;
+    for(edge e : E) {
+        if(MST.size() == n - 1) break;
+        if(Union(e.x, e.y)) {
+            MST.push_back(e);
+            d += e.w;
+        }
+    }
+    if(MST.size() < n - 1) cout << "IMPOSSIBLE";
+    else cout << d;
+}
+
+int main() {
+    ktao();
+    Kruskal();
+}
