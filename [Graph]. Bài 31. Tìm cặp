@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int n, cnt[1005];
+vector<int> ke[1005];
+
+int DFS(int i, int j) {
+    int count = 1;
+    for(int x : ke[i]) {
+        if(x != j) {
+            count += DFS(x, i);
+        }
+    }
+    return cnt[i] = count;
+}
+
+int main() {
+    cin >> n;
+    for(int i = 1; i < n; i++) {
+        int a, b;
+        cin >> a >> b;
+        ke[a].push_back(b);
+        ke[b].push_back(a);
+    }
+    DFS(1, 0);
+    ll ans = 0;
+    for(int i = 1; i <= n; i++) {
+        ans += cnt[i];
+    }
+    cout << ans;
+}
