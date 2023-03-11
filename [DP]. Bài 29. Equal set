@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+const int mod = 1e9 + 7;
+
+ll powMOD(ll a, ll b, ll m) {
+    ll res = 1;
+    a %= mod;
+    while(b) {
+        if(b % 2 == 1) {
+            res *= a;
+            res %= mod;
+        }
+        a *= a;
+        a %= mod;
+        b /= 2;
+    }
+    return res;
+}
+
+int main() {
+    ll n;
+    cin >> n;
+    if((n * (n + 1) / 2) % 2 == 1) {
+        cout << 0;
+        return 0;
+    }
+    ll s = (n * (n + 1)) / 4;
+    vector<ll> F(s + 1, 0);
+    F[0] = 1;
+    for(ll i = 1; i <= n; i++) {
+        for(ll j = s; j >= i; j--) {
+            F[j] += F[j - i];
+            F[j] %= mod;
+        }
+    }
+    cout << (F[s] * (powMOD(2, mod - 2, mod))) % mod;
+}
