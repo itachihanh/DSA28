@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int n, s, X[100], a[100], b[100];
+vector<string> v;
+
+void Try(int i, int idx, int sum) {
+    for(int j = idx; j <= n; j++) {
+        if(sum + X[j] <= s) {
+            a[i] = X[j];
+            sum += X[j];
+            if(sum == s) {
+                string tmp = "{";
+                for(int k = 1; k < i; k++) {
+                    tmp += to_string(a[k]) + " ";
+                }
+                tmp += to_string(a[i]) + "}";
+                v.push_back(tmp);
+            }
+            else Try(i + 1, j, sum);
+            sum -= X[j];
+        }
+    }
+}
+
+int main() {
+    cin >> n >> s;
+    for(int i = 1; i <= n; i++) {
+        cin >> X[i];
+    }
+    sort(X + 1, X + 1 + n);
+    Try(1, 1, 0);
+    if(v.size() == 0) {
+        cout << -1;
+        return 0;
+    }
+    cout << v.size() << endl;
+    for(string i : v) {
+        cout << i << endl;
+    }
+}
