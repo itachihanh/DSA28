@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node {
+    int val;
+    node *left;
+    node *right;
+    node(int x) {
+        val = x;
+        left = right = NULL;
+    }
+};
+
+void makeRoot(node *root, int u, int v, char c) {
+    if(c == 'L') root->left = new node(v);
+    else root->right = new node(v);
+}
+
+void insertNode(node *root, int u, int v, char c) {
+    if(root == NULL) return;
+    if(root->val == u) makeRoot(root, u, v, c);
+    else {
+        insertNode(root->left, u, v, c);
+        insertNode(root->right, u, v, c);
+    }
+}
+
+bool check1(node *root, int &h, int tmp) {
+    if(root == NULL) return true;
+    if(root->left == NULL && root->right == NULL) {
+        if(h == 0) {
+            h = tmp;
+            return true;
+        }
+        else return h == tmp;
+    }
+    return check1(root->left, h, tmp + 1) && check1(root->right, h, tmp + 1);
+}
+
+bool check2(node *root) {
+    queue<node *> q;
+    q.push(root);
+    while(!q.empty()) {
+        node *top = q.front(); q.pop();
+        int cnt = 0;
+        if(top->left != NULL) {
+            ++cnt;
+            q.push(top->left);
+        }
+        if(top->right != NULL) {
+            ++cnt;
+            q.push(top->right);
+        }
+        if(cnt == 1) return false;
+    }
+    return true;
+}
+
+int main() {
+    int n; cin >> n;
+    node *root = NULL;
+    for(int i = 1; i <= n; i++) {
+        int u, v; char c; cin >> u >> v >> c;
+        if(root == NULL) root = new node(u);
+        insertNode(root, u, v, c);
+    }
+    int h = 0;
+    if(check1(root, h, 0) && check2(root)) cout << "YES";
+    else cout << "NO";
+}
