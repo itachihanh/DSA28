@@ -1,0 +1,53 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define iii pair<int, pair<int, int>>
+int n, m;
+int a[1000][1000], d[1000][1000];
+vector<iii> adj[1000][1000];
+int dx[4] = {-1, +0, +0, +1};
+int dy[4] = {+0, +1, -1, +0};
+
+void nhap() {
+    cin >> n >> m;
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= m; j++) {
+            cin >> a[i][j];
+            d[i][j] = 1e9;
+        }
+    }
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= m; j++) {
+            for(int k = 0; k < 4; k++) {
+                int i1 = i + dx[k], j1 = j + dy[k];
+                if(i1 >= 1 && i1 <= n && j1 >= 1 && j1 <= m) {
+                    adj[i][j].push_back({a[i1][j1], {i1, j1}});
+                }
+            }
+        }
+    }
+}
+
+void Dijkstra() {
+    priority_queue<iii, vector<iii>, greater<iii>> q;
+    q.push({a[1][1], {1, 1}});
+    d[1][1] = a[1][1];
+    while(!q.empty()) {
+        iii top = q.top(); q.pop();
+        int w = top.first, x = top.second.first, y = top.second.second;
+        if(w > d[x][y]) continue;
+        for(iii i : adj[x][y]) {
+            int i1 = i.second.first, i2 = i.second.second;
+            if(d[i1][i2] > d[x][y] + a[i1][i2]) {
+                d[i1][i2] = d[x][y] + a[i1][i2];
+                q.push({d[i1][i2], {i1, i2}});
+            }
+        }
+    }
+    cout << d[n][m];
+}
+
+int main() {
+    nhap();
+    Dijkstra();
+}
