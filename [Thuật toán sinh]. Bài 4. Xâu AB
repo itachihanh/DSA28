@@ -1,0 +1,25 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+const int mod = 1e9 + 7;
+
+int n, X[11];
+
+void Try(int i) {
+    for(int j = 0; j <= 1; j++) {
+        X[i] = j;
+        if(i == n) {
+            for(int idx = 1; idx <= n; idx++) {
+                if(X[idx] == 0) cout << "B";
+                else cout << "A";
+            }
+            cout << endl;
+        }
+        else Try(i + 1);
+    }
+}
+
+int main() {
+    cin >> n;
+    Try(1);
+}
