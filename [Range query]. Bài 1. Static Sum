@@ -54,7 +54,7 @@ int main() {
     }
 }
 
-Fanwich tree
+Fenwich tree
 
 #include<bits/stdc++.h>
 using namespace std;
