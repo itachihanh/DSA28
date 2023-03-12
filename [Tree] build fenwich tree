@@ -27,7 +27,10 @@ int main() {
         update(i, a[i]);
     }
     while(q--) {
-        int x, y; cin >> x >> y;
-        cout << query(y) - query(x - 1) << endl;
+        int tv,x, y; cin >> tv >> x >> y;
+        if(tv == 1) {
+            update(x, y - a[x]); a[x] = y;
+        }
+        else cout << query(y) - query(x - 1) << endl;
     }
 }
