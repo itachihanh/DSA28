@@ -1,0 +1,37 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+const int maxn = 1000005;
+ll a[maxn], t[4 * maxn];
+
+void build(int v, int l, int r) {
+    if(l == r) {
+        t[v] = a[l];
+    }
+    else {
+        int m = (l + r) / 2;
+        build(2 * v, l, m);
+        build(2 * v + 1, m + 1, r);
+        t[v] = t[2 * v] ^ t[2 * v + 1];
+    }
+}
+
+ll xorr(int v, int tl, int tr, int l, int r) {
+    if(l > r) return 0;
+    if(l == tl && r == tr) return t[v];
+    else {
+        int tm = (tl + tr) / 2;
+        return xorr(2 * v, tl, tm, l, min(r, tm)) ^ xorr(2 * v + 1, tm + 1, tr, max(tm + 1, l), r);
+    }
+}
+
+int main() {
+    int n, q; cin >> n >> q;
+    for(int i = 1; i <= n; i++) cin >> a[i];
+    build(1, 1, n);
+    while(q--) {
+        int l, r; cin >> l >> r;
+        cout << xorr(1, 1, n, l, r) << endl;
+    }
+}
