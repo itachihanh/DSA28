@@ -1,0 +1,68 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool visited[505][505], check;
+char c[505][505];
+int si, sj, n, m;
+int di[4] = {+0, -1, +1, +0};
+int dj[4] = {-1, +0, +0, +1};
+
+void ktao() {
+	check = false;
+	cin >> n >> m;
+	for(int i = 0; i < n; i++) {
+		for(int j = 0; j < m; j++) {
+			visited[i][j] = false;
+			cin >> c[i][j];
+			if(c[i][j] == 'S') {
+				si = i; sj = j;
+			}
+		}
+	}
+}
+
+void DFS(int i, int j, int cnt, int tmp) {
+	if(check || cnt > 2) return;
+	if(c[i][j] == 'T' && cnt <= 2) check = true;
+	visited[i][j] = true;
+	for(int k = 0; k < 4; k++) {
+		int i1 = i + di[k], j1 = j + dj[k];
+		if(c[i1][j1] != '*' && i1 >= 0 && i1 < n && j1 >= 0 && j1 < m && !visited[i1][j1]) {
+			if(tmp == -1) {
+				if(k == 0 || k == 3) {
+					DFS(i1, j1, cnt + 1, 0);
+				}
+				else {
+					DFS(i1, j1, cnt + 1, 1);
+				}
+			}
+			if(tmp == 0) {
+				if(k == 0 || k == 3) {
+					DFS(i1, j1, cnt, 0);
+				}
+				else {
+					DFS(i1, j1, cnt + 1, 1);
+				}
+			}
+			if(tmp == 1){
+				if(k == 0 || k == 3) {
+					DFS(i1, j1, cnt + 1, 0);
+				}
+				else {
+					DFS(i1, j1, cnt, 1);
+				}
+			}
+		}
+	}
+	visited[i][j] = false;
+}
+
+int main() {
+	int t; cin >> t;
+	while(t--) {
+		ktao();
+		DFS(si, sj, -1, -1);
+		if(check) cout << "YES" << endl;
+		else cout << "NO" << endl;
+	}
+}
