@@ -1,21 +1,40 @@
-#include<bits/stdc++.h>
+// cách dùng mảng 2 chiều khá đơn giản, nhưng chạy lâu hơn cách mảng 1 chiều
+#include <bits/stdc++.h>
 using namespace std;
-#define ll long long
-const int mod = 1e9 + 7;
 
 int main() {
-    int n, s;
-    cin >> n >> s;
-    int a[n + 1];
+    int n, s; cin >> n >> s;
+    int a[n + 1], dp[n + 1][s + 1];
+    for(int i = 1; i <= n; i++) cin >> a[i];
+    memset(dp, 0, sizeof(dp));
+    dp[0][0] = 1;
     for(int i = 1; i <= n; i++) {
-        cin >> a[i];
-    }
-    vector<bool> v(s + 1, false);
-    v[0] = true;
-    for(int i = 1; i <= n; i++) {
-        for(int j = s; j >= a[i]; j--) {
-            if(v[j - a[i]]) v[j] = true;
+        for(int j = 0; j <= s; j++) {
+            if(dp[i - 1][j]) dp[i][j] = 1;
+            if(j + a[i] <= s) dp[i][j + a[i]] = dp[i - 1][j];
         }
     }
-    cout << v[s];
+    if(dp[n][s]) cout << "YES" << endl;
+    else cout << "NO" << endl;
+}
+
+// dùng mảng 1 chiều, phải duyệt s từ cuối về vì nếu duyệt xuôi thì một phần tử sẽ bị lặp nhiều lần
+// phải để vòng for của n ở ngoài, vì để s ở ngoài thì một phần tử cũng bị lặp nhiều lần
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int t; cin >> t;
+    int n, s; cin >> n >> s;
+    int a[n], dp[s + 1];
+    for(int &i : a) cin >> i;
+    memset(dp, 0, sizeof(dp));
+    dp[0] = 1;
+    for(int i = 0; i < n; i++) {
+        for(int j = s; j >= a[i]; j--) {
+            if(dp[j - a[i]]) dp[j] = 1;
+        }
+    }
+    if(dp[s]) cout << "YES" << endl;
+    else cout << "NO" << endl;
 }
