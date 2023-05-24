@@ -1,46 +1,39 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long
-const int mod = 1e9 + 7;
 
-struct Fly {
-    int f, s, w;
+struct job {
+    ll l, r, val;
 };
 
-bool cmp(Fly a, Fly b) {
-    return a.s < b.s;
+job a[200005];
+ll dp[200005], n;
+
+bool cmp(job a, job b) {
+    return a.r < b.r;
 }
 
-int bs(Fly a[], int i) {
-    int l = 0, r = i - 1, res = -1;
-    while(l <= r) {
-        int m = (l + r) / 2;
-        if(a[m].s < a[i].f) {
-            res = m;
-            l = m + 1;
-        }
-        else r = m - 1;
+int bs(ll x, int i, int j) {
+    ll m, ans;
+    while(i <= j) {
+        m = (i + j) / 2;
+        if(a[m].r < x) i = m + 1, ans = m;
+        else j = m - 1;
     }
-    return res;
+    return ans;
 }
 
 int main() {
-    int n;
     cin >> n;
-    Fly a[n];
-    for(int i = 0; i < n; i++) {
-        cin >> a[i].f >> a[i].s >> a[i].w;
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i].l >> a[i].r >> a[i].val;
     }
-    sort(a, a + n, cmp);
-    ll dp[n];
-    dp[0] = a[0].w;
-    for(int i = 1; i < n; i++) {
-        ll tmp = a[i].w;
-        int res = bs(a, i);
-        if(res != -1) {
-            tmp += dp[res];
-        }
-        dp[i] = max(dp[i - 1], tmp);
+    sort(a + 1, a + n + 1, cmp);
+    dp[0] = 0; a[0].l = 0; a[0].r = 0; a[0].val = 0;
+    for(int i = 1; i <= n; ++i) {
+        int j = bs(a[i].l, 0, i - 1);
+        dp[i] = a[i].val + dp[j];
+        dp[i] = max(dp[i], dp[i - 1]);
     }
-    cout << dp[n - 1];
+    cout << dp[n];
 }
